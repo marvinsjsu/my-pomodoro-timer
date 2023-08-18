@@ -1,0 +1,28 @@
+.my-pomodoro-timer-container {
+  isolation: isolate;
+  position: relative;
+  width: 200px;
+  padding: 8px;
+}
+
+.app-cta-container {
+  text-align: right;
+}
+
+.app-ui-container.hidden {
+  display: none;
+  visibility: hidden;
+  height: 0;
+}
+
+button {
+  font-size: 18px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+button:hover {
+  color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}

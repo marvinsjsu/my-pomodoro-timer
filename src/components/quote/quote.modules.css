@@ -1,0 +1,15 @@
+.quote-container {
+  padding: 12px;
+  font-family: Kalam, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+p {
+  margin: 0;
+  margin-bottom: 8px;
+}
+
+p.author {
+  text-align: right;
+}
