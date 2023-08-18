@@ -1,0 +1,12 @@
+{
+  "name": "MyMoments - Pomodoro Timer",
+  "version": "1.0.0",
+  "description": "Timer to help focus on tasks.",
+  "manifest_version": 3,
+  "author": "Marvin Mante",
+  "action":{
+      "default_popup": "index.html",
+      "default_title": "MyMoments - Pomodoro Timer",
+      "default_icon": "my-moments.png"
+  }
+}
