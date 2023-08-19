@@ -59,13 +59,13 @@ h4 {
 }
 
 h5 {
-  color: #219ebc;
-  font-size: 14px;
+  color: #fb8500;
+  font-size: 12px;
   text-align: center;
-  max-width: 100%;
+  height: 30px;
+  max-width: 70%;
   padding: 4px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  overflow-x: scroll;
   white-space: nowrap;
   margin: 0;
   opacity: 0.5;
