@@ -1,5 +1,7 @@
 import store from "store2";
 
+import { dataKeys, localStorageKey } from "../constants";
+
 export const storeData = async (key: string, data: any) => {
   try {
     await store(key, data);
@@ -24,4 +26,21 @@ export const removeData = async () => {
   } catch(error) {
     console.error('Error deleting data from localStorage - ', error);
   }
+};
+
+export const containsKey = async (dataKey: string) => {
+  return await getData(dataKey);
+};
+
+export const initLocalStorage = async () => {
+  const localStorageData = await containsKey(localStorageKey);
+
+  if (!localStorageData) {
+    await storeData(localStorageKey, {
+      [dataKeys.FocusItems]: [],
+    });
+    return true;
+  }
+
+  return false;
 };

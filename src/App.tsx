@@ -1,12 +1,18 @@
 
-import MyPomodoroTimer from './components/my-pomodoro-timer/my-pomodoro-timer.component';
+import MyPomodoroTimer from "./components/my-pomodoro-timer/my-pomodoro-timer.component";
 
-import './App.modules.css';
+import useCachedData from "./hooks/useCachedData";
+
+import "./App.modules.css";
 
 function App() {
+  const [ isLoadingDone, focusItems ] = useCachedData();
   return (
     <div className="app-container">
-      <MyPomodoroTimer />
+      {isLoadingDone
+        ? <MyPomodoroTimer initialFocusItems={focusItems} />
+        : <p>Loading data...</p>
+      }
     </div>
   );
 }

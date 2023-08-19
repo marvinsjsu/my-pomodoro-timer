@@ -4,13 +4,18 @@ import Timer from "../timer/timer.component";
 import FocusList from "../focus-list/focus-list.component";
 import focusListActionType from "../../actions/focus-list";
 import TickerTape from "../ticker-tape/ticker-tape.component";
-import focusListReducer, { initialFocusItems } from "../../reducers/focus-list";
+import focusListReducer from "../../reducers/focus-list";
+import { saveFocusItem, removeFocusItem } from "../../utils/focus-item";
 
 import { TFocusItem } from "../../types";
 
 import './my-pomodoro-timer.modules.css';
 
-const MyPomodoroTimer:FC = () => {
+type TMyPomodoroTimerProps = {
+  initialFocusItems: TFocusItem[];
+};
+
+const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems }) => {
   const [focusList, dispatch] = useReducer(focusListReducer, initialFocusItems);
   const [showTimer, setShowTimer] = useState<boolean>(false);
   const [hideAll, setHideAll] = useState<boolean>(false);
@@ -21,19 +26,21 @@ const MyPomodoroTimer:FC = () => {
   };
 
   const toggleHideAllHandler = () => {
-    document.getElementsByTagName("html")[0].style.height = "40px";
     setHideAll(!hideAll);
   };
 
-  const addFocusItemHandler = (itemName: string) => {
+  const addFocusItemHandler = async (itemName: string) => {
+    const newFocusItem = {
+      id: Date.now(),
+      name: itemName,
+      done: false,
+    };
+
     dispatch({
       type: focusListActionType.ADD,
-      payload: {
-        id: Date.now(),
-        name: itemName,
-        done: false,
-      }
+      payload: newFocusItem,
     });
+    saveFocusItem(newFocusItem);
   };
 
   const removeFocusItemHandler = (itemId: number) => {
@@ -41,6 +48,7 @@ const MyPomodoroTimer:FC = () => {
       type: focusListActionType.DELETE,
       payload: { id: itemId },
     });
+    removeFocusItem(itemId);
   };
 
   const updateFocusItemHandler = (focusItem: TFocusItem) => {
