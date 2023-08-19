@@ -3,6 +3,7 @@ import { FC, useState, useEffect, useReducer } from "react";
 import Timer from "../timer/timer.component";
 import FocusList from "../focus-list/focus-list.component";
 import focusListActionType from "../../actions/focus-list";
+import TickerTape from "../ticker-tape/ticker-tape.component";
 import focusListReducer, { initialFocusItems } from "../../reducers/focus-list";
 
 import { TFocusItem } from "../../types";
@@ -13,6 +14,7 @@ const MyPomodoroTimer:FC = () => {
   const [focusList, dispatch] = useReducer(focusListReducer, initialFocusItems);
   const [showTimer, setShowTimer] = useState<boolean>(false);
   const [hideAll, setHideAll] = useState<boolean>(false);
+  const currFocusItem = focusList[0];
 
   const toggleDisplayHandler = () => {
     setShowTimer(!showTimer);
@@ -79,6 +81,7 @@ const MyPomodoroTimer:FC = () => {
   return (
     <div className="my-pomodoro-timer-container">
       <div className="app-cta-container">
+        {hideAll && (<TickerTape focusItem={currFocusItem} countdown={200}/>)}
         {renderToggleUIDisplay()}
         <button
           type="button"

@@ -69,7 +69,6 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
   };
 
   const doneTaskHandler = () => {
-    console.log('doneTaskHandler: ', { currFocusItem });
     if (currFocusItem) {
       currFocusItem.end = Date.now();
       currFocusItem.done = true;
@@ -97,16 +96,18 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
 
   return (
     <div className={`timer-container ${!show && 'hidden'}`}>
-      {currFocusItem && (
-        <>
-          <h4 className="timer-current-focus-item">
-            {currFocusItem.name}
-          </h4>
-          <button type="button" onClick={doneTaskHandler}>
-            done
-          </button>
-        </>
-      )}
+      <div className="timer-focus-item-container"> 
+        {currFocusItem && (
+          <>
+            <h4 className="timer-current-focus-item">
+              {currFocusItem.name}
+            </h4>
+            <button type="button" onClick={doneTaskHandler}>
+              <i className="fa-regular fa-circle-check" />
+            </button>          
+          </> 
+        )}
+      </div>
       <ProgressBar
         value={countDown}
         targetValue={currDuration}
@@ -114,7 +115,7 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
         <div className="timer-countdown-container">
           {countdownDisplay(countDown)}
         </div>
-        {renderStartBtn()}
+        {isPaused ? renderStartBtn() : renderPauseBtn()}
         {/* {renderPauseBtn()} */}
         {/* {renderResetBtn()}    */}
       </ProgressBar>

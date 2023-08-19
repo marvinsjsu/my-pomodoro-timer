@@ -5,7 +5,6 @@
   height: 260px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 8px;
   background-color: white;
@@ -14,6 +13,18 @@
 
 .timer-container.hidden {
   z-index: 0;
+}
+
+.timer-focus-item-container {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.timer-focus-item-container button {
+  position: absolute;
+  right: 24px;
 }
 
 .timer-cta-container {
