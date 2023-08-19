@@ -42,3 +42,12 @@ export const removeFocusItem = async (focusItemId: number) => {
   const newFocusItems = focusItems.filter(focusItem => focusItem.id !== focusItemId);
   await storeFocusItems(newFocusItems);
 };
+
+export const updateFocusItem = async (updatedFocusItem: TFocusItem) => {
+  const focusItems = await getFocusItems();
+  const newFocusItems = focusItems.map(focusItem => focusItem.id === updatedFocusItem.id
+    ? updatedFocusItem
+    : focusItem
+  );
+  await storeFocusItems(newFocusItems);
+};
