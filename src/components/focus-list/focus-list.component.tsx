@@ -6,18 +6,21 @@ import { TFocusItem } from '../../types';
 
 import './focus-list.modules.css';
 
-const MAX_FOCUS_ITEM_COUNT = 5;
+const MAX_FOCUS_ITEM_COUNT = 4;
 
 type TFocusListProps = {
   show: boolean;
   focusList: TFocusItem[];
+  resetFocusList: () => void;
   addFocusItem: (itemName: string) => void;
   removeFocusItem: (itemId: number) => void;
 };
 
-const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFocusItem }) => {
+const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFocusItem, resetFocusList }) => {
   const [inputVal, setInputVal] = useState<string>('');
   const showInputField = focusList.length < MAX_FOCUS_ITEM_COUNT;
+  const allTasksDone = focusList.length === MAX_FOCUS_ITEM_COUNT
+    && focusList.every(focusItem => focusItem.done);
 
   const inputChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>): void => {
     setInputVal(evt.target.value);
@@ -40,6 +43,12 @@ const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFo
     removeFocusItem(focusItemId);
   }
 
+  const resetFocusListHandler = () => {
+    resetFocusList();
+  }
+
+  const storeFocusList = () => {}
+
   return (
     <div className={`focus-list-container ${!show && 'hidden'}`}>
       <ul className="focus-list">
@@ -50,11 +59,12 @@ const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFo
         )}
         {focusList.map(focusItem => (
           <li key={focusItem.id}>
-            <span className="focus-list-item-name">
+            <span className={`focus-list-item-name ${focusItem?.done && 'done'}`}>
               {focusItem.name}
             </span>
             <button
               type="button"
+              disabled={focusItem?.done || false}
               onClick={() => removeFocusItemHandler(focusItem.id)}
             >
               <i className="fa-solid fa-circle-minus" />
@@ -62,7 +72,7 @@ const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFo
           </li>
         ))}
       </ul>
-      {showInputField && (
+      {showInputField ? (
         <div className="focus-list-input-container">
           <input
             type="text"
@@ -77,6 +87,24 @@ const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFo
             <i className="fa-solid fa-plus" />
           </button>
         </div>  
+      ) : (
+        <div className="focus-list-limit-message">
+          {allTasksDone ? (
+            <>
+              <p>Great work!</p>
+              <button
+                type="button"
+                className="focus-list-reset-btn"
+                onClick={resetFocusListHandler}
+              >
+                Let's start a new set
+              </button>
+            </>
+          ) : (
+            <p>Let's focus on completing these four tasks.</p>
+          )}
+          
+        </div>
       )}        
     </div>
   );

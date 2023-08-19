@@ -6,6 +6,9 @@ const quoteApiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&
 const proxyApiUrl = 'https://corsproxy.io/?';
 const proxiedApiUrl = `${proxyApiUrl}${encodeURIComponent(quoteApiUrl)}`;
 
+const defaultQuoteText = `To practice five things under all circumstances constitutes perfect virtue; these five are gravity, generosity of soul, sincerity, earnestness, and kindness.`;
+const defaultQuoteAuthor = 'Confucious';
+
 type TQuote = {
   text: string;
   author?: string;
@@ -29,6 +32,11 @@ const Quote:FC = () => {
     try {
       fetchQuote();
     } catch(error) {
+      const quote = {
+        text: defaultQuoteText,
+        author: defaultQuoteAuthor,
+      };
+      setQuote(quote);
       console.log('Error fetching quote - ', error);
     }
 

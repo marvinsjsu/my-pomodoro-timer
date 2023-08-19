@@ -26,3 +26,13 @@ button:hover {
   color: rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
+
+button:disabled {
+  opacity: 0.5;
+  color: rgba(0, 0, 0, 0.2);
+  cursor: none;
+}
+
+button:disabled i {
+  cursor: default;
+}

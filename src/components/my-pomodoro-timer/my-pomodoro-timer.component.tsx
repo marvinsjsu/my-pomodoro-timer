@@ -29,6 +29,7 @@ const MyPomodoroTimer:FC = () => {
       payload: {
         id: Date.now(),
         name: itemName,
+        done: false,
       }
     });
   };
@@ -37,6 +38,19 @@ const MyPomodoroTimer:FC = () => {
     dispatch({
       type: focusListActionType.DELETE,
       payload: { id: itemId },
+    });
+  };
+
+  const updateFocusItemHandler = (focusItem: TFocusItem) => {
+    dispatch({
+      type: focusListActionType.UPDATE,
+      payload: focusItem,
+    });
+  };
+
+  const resetFocusListHandler = () => {
+    dispatch({
+      type: focusListActionType.RESET,
     });
   };
 
@@ -81,12 +95,14 @@ const MyPomodoroTimer:FC = () => {
           show={showTimer}
           focusList={focusList}
           addFocusItem={addFocusItemHandler}
+          updateFocusItem={updateFocusItemHandler}
           removeFocusItem={removeFocusItemHandler}
         />
         <FocusList
           show={!showTimer}
           focusList={focusList}
           addFocusItem={addFocusItemHandler}
+          resetFocusList={resetFocusListHandler}
           removeFocusItem={removeFocusItemHandler}
         />
       </div>

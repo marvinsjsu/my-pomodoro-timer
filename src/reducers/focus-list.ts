@@ -13,8 +13,16 @@ const reducer= (state = initialFocusItems, action: TAction) => {
         action.payload,
       ];
     }
+    case FocusListActionType.UPDATE: {
+      return state.map(focusItem => focusItem.id === action.payload.id
+        ? action.payload
+        : focusItem);
+    }
     case FocusListActionType.DELETE: {
       return state.filter(focusItem => focusItem.id !== action.payload.id);
+    }
+    case FocusListActionType.RESET: {
+      return initialFocusItems;
     }
     default:
       return state;

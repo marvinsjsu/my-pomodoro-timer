@@ -5,6 +5,7 @@ type TCountDownReturn = [
     countDown: number,
     isStarted: boolean,
     isPaused: boolean,
+    hasEnded: boolean,
   },
   {
     start: (count?: number) => void,
@@ -18,6 +19,7 @@ export function useCountdown(initialCountValue: number = -1): TCountDownReturn {
   const [ countDown, setCountDown ] = useState<number>(-1);
   const [ isStarted, setIsStarted ] = useState<boolean>(false);
   const [ isPaused, setIsPaused ] = useState<boolean>(false);
+  const [ hasEnded, setHasEnded ] = useState<boolean>(false);
 
   const intervalRef = useRef<number | null>();
 
@@ -31,7 +33,7 @@ export function useCountdown(initialCountValue: number = -1): TCountDownReturn {
   useEffect(() => {
     if (countDown === -1) return;
 
-    if (intervalRef.current && countDown < 0) {
+    if (intervalRef.current && countDown === 0) {
       removeInterval();
     } else {
       if (!intervalRef.current) {
@@ -40,7 +42,7 @@ export function useCountdown(initialCountValue: number = -1): TCountDownReturn {
           setCountDown((count) => {
             return count - 1;
           });
-        }, 1000);
+        }, 100);
       }
     }
 
@@ -58,7 +60,7 @@ export function useCountdown(initialCountValue: number = -1): TCountDownReturn {
   }, [initialCount]);
 
   return [
-    { countDown, isStarted, isPaused },
+    { countDown, isStarted, isPaused, hasEnded },
     { 
       start: (count) => {
         setInitialCount(count ?? initialCount);
@@ -71,6 +73,7 @@ export function useCountdown(initialCountValue: number = -1): TCountDownReturn {
       reset: (count, paused=false) => {
         setIsStarted(false);
         setIsPaused(false);
+        setHasEnded(false);
         setInitialCount(count ?? initialCountValue);
       },
     }
