@@ -6,11 +6,12 @@ type TProgressBarProps = {
   value: number;
   targetValue: number;
   children?: ReactNode;
+  color?: string;
 };
 
-const ProgressBar:FC<TProgressBarProps> = ({ value, targetValue, children }) => {
+const ProgressBar:FC<TProgressBarProps> = ({ value, targetValue, children, color="#fb8500" }) => {
   const progression = ((targetValue - value) / targetValue) * 360;
-  const background = `conic-gradient(#fb8500, ${progression}deg, #ededed 0deg)`;
+  const background = `conic-gradient(${color}, ${progression}deg, #ededed 0deg)`;
   return (
     <div className="progress-bar-container">
       <div

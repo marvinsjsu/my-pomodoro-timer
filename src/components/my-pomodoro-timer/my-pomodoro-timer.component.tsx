@@ -90,7 +90,7 @@ const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems }) => {
   return (
     <div className="my-pomodoro-timer-container">
       <div className="app-cta-container">
-        {hideAll && (<TickerTape focusItem={currFocusItem} countdown={200}/>)}
+        {hideAll && (<TickerTape focusItem={currFocusItem} />)}
         {renderToggleUIDisplay()}
         <button
           type="button"

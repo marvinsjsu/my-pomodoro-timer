@@ -21,12 +21,17 @@ const Quote:FC = () => {
     async function fetchQuote() {
       const response = await fetch(proxiedApiUrl);
       const data = await response.json();
-      const quote = {
-        text: data.quoteText,
-        author: data.quoteAuthor,
-      };
 
-      setQuote(quote);
+      if (data?.quoteText?.length > 200) {
+        await fetchQuote();
+      } else {
+        const quote = {
+          text: data.quoteText,
+          author: data.quoteAuthor,
+        };
+  
+        setQuote(quote);
+      }
     }   
 
     try {
@@ -47,7 +52,9 @@ const Quote:FC = () => {
   return (
     <div className="quote-container">
       <p>{quote?.text}</p>
-      <p className="author">by {quote?.author}</p>
+      {quote?.author && (
+        <p className="author">by {quote?.author}</p>
+      )}
     </div>
   );
 };

@@ -16,14 +16,23 @@
 }
 
 .timer-focus-item-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: relative;
   height: 50px;
   width: 100%;
   margin-bottom: 12px;
 }
 
+.timer-current-focus-item.breaktime {
+  color: #981eb7;
+}
+
 .timer-focus-item-container button {
   position: absolute;
+  bottom: -30px;
   right: 24px;
 }
 

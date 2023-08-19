@@ -12,7 +12,9 @@ import './timer.modules.css';
 // five minutes of break
 const defaultDuration = 20 * 60; 
 const fiveMinutesInSeconds = 5 * 60;
+const minDuration = fiveMinutesInSeconds * 2;
 const maxDuration = fiveMinutesInSeconds * 5;
+const maxBreaktime = fiveMinutesInSeconds * 6;
 
 type TTimerProps = {
   show: boolean;
@@ -27,13 +29,37 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
   const [currDuration, setCurrDuration] = useState<number>(defaultDuration);
   const currFocusItem = focusList.length > 0 ? focusList.filter(fl => !fl.done)[0] : null;
   const nextFocusItem = focusList.length > 1 ? focusList.filter(fl => !fl.done)[1] : null;
+  const [finishedFocusMoments, setFinishedFocusMoments] = useState<number>(0);
+  const [isBreaktime, setIsBreaktime] = useState<boolean>(false);
   
-  const minusBtnIsDisabled = countDown < fiveMinutesInSeconds;
-  const addBtnIsDisabled = currDuration > maxDuration;
+  const minusBtnIsDisabled = (countDown < minDuration) || isBreaktime;
+  const addBtnIsDisabled = (currDuration > maxDuration) || isBreaktime;
+
+  console.log({ countDown, isStarted, isPaused, hasEnded });
 
   useEffect(() => {
     pause();
   }, []);
+
+  useEffect(() => {
+    if (isStarted && countDown === -1) {
+      if (!isBreaktime) {
+        setFinishedFocusMoments(finishedFocusMoments + 1);
+        setCurrDuration(fiveMinutesInSeconds);
+        reset(fiveMinutesInSeconds, true);
+      } else {
+        if (finishedFocusMoments === 4) {
+          setFinishedFocusMoments(0);
+          setCurrDuration(maxBreaktime);
+          reset(maxBreaktime, true);
+        } else {
+          setCurrDuration(defaultDuration);
+          reset(defaultDuration, true);
+        }
+      }
+      setIsBreaktime(!isBreaktime);
+    }
+  }, [countDown, isBreaktime, isStarted, reset, finishedFocusMoments]);
 
   const startTimerHandler = () => {
     if (currFocusItem) {
@@ -83,21 +109,20 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
   );
 
   const renderPauseBtn = () => (
-    <button type="button" onClick={pauseTimerHandler}>
+    <button type="button" onClick={pauseTimerHandler} disabled={isBreaktime}>
       <i className="fa-solid fa-pause" />
-    </button>
-  );
-
-  const renderResetBtn = () => (
-    <button type="button" onClick={resetTimerHandler}>
-      <i className="fa-solid fa-arrows-rotate" />
     </button>
   );
 
   return (
     <div className={`timer-container ${!show && 'hidden'}`}>
-      <div className="timer-focus-item-container"> 
-        {currFocusItem && (
+      <div className="timer-focus-item-container">
+        {isBreaktime && (
+            <h4 className="timer-current-focus-item breaktime">
+              Let's take a break!
+            </h4>
+        )}
+        {currFocusItem && !isBreaktime && (
           <>
             <h4 className="timer-current-focus-item">
               {currFocusItem.name}
@@ -111,13 +136,12 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
       <ProgressBar
         value={countDown}
         targetValue={currDuration}
+        color={isBreaktime ? "#981eb7" : undefined}
       >
         <div className="timer-countdown-container">
           {countdownDisplay(countDown)}
         </div>
         {isPaused ? renderStartBtn() : renderPauseBtn()}
-        {/* {renderPauseBtn()} */}
-        {/* {renderResetBtn()}    */}
       </ProgressBar>
       <div className="timer-cta-container">
         <button
