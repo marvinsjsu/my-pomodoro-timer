@@ -6,13 +6,18 @@ import useCachedData from "./hooks/useCachedData";
 import "./App.modules.css";
 
 function App() {
-  const [ isLoadingDone, focusItems ] = useCachedData();
+  const [ isLoadingDone, focusItems, countdown ] = useCachedData();
+
   return (
     <div className="app-container">
-      {isLoadingDone
-        ? <MyPomodoroTimer initialFocusItems={focusItems} />
-        : <p>Loading data...</p>
-      }
+      {isLoadingDone ? (
+        <MyPomodoroTimer
+          initialCountdown={countdown}
+          initialFocusItems={focusItems}
+        />
+      ) : (
+        <p>Loading data...</p>
+      )}
     </div>
   );
 }

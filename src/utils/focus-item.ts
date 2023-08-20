@@ -17,13 +17,11 @@ export const initFocusItems = async (): Promise<Boolean> => {
 
 export const getFocusItems = async (): Promise<TFocusItem[]> => {
   const localStorageData = await getData(localStorageKey);
-  console.log({ localStorageData });
   return localStorageData.FocusItems;
 };
 
 export const storeFocusItems = async (focusItems: TFocusItem[]) => {
   const localStorageData = await getData(localStorageKey);
-  // localStorageData[dataKeys.FocusItems] = focusItems;
   const newLocalStorageData = {
     ...localStorageData,
     [dataKeys.FocusItems]: focusItems,

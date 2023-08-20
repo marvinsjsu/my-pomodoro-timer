@@ -1,6 +1,6 @@
 import store from "store2";
 
-import { dataKeys, localStorageKey } from "../constants";
+import { dataKeys, localStorageKey, defaultDuration } from "../constants";
 
 export const storeData = async (key: string, data: any) => {
   try {
@@ -38,6 +38,7 @@ export const initLocalStorage = async () => {
   if (!localStorageData) {
     await storeData(localStorageKey, {
       [dataKeys.FocusItems]: [],
+      [dataKeys.Countdown]: defaultDuration,
     });
     return true;
   }

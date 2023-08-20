@@ -1,7 +1,6 @@
 import { FC, useState, useEffect } from "react";
 
 import ProgressBar from "../progress-bar/progress-bar.component";
-import { useCountdown } from "../../hooks/useCountdown";
 import { countdownDisplay } from "../../utils";
 
 import { TFocusItem } from "../../types";
@@ -22,27 +21,33 @@ type TTimerProps = {
   addFocusItem: (itemName: string) => void;
   removeFocusItem: (itemId: number) => void;
   updateFocusItem: (focusItem: TFocusItem) => void;
+  countdown: number;
+  isStarted: boolean;
+  isPaused: boolean;
+  hasEnded: boolean;
+  start: () => void;
+  pause: () => void;
+  reset: (duration: number, pause: boolean) => void;
 };
 
-const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem, removeFocusItem }) => {
-  const [{ countDown, isStarted, isPaused, hasEnded }, { start, pause, reset }] = useCountdown(defaultDuration);
+const Timer:FC<TTimerProps> = ({ show, countdown, isStarted, isPaused, hasEnded, start, pause, reset, focusList, addFocusItem, updateFocusItem, removeFocusItem }) => {
   const [currDuration, setCurrDuration] = useState<number>(defaultDuration);
   const currFocusItem = focusList.length > 0 ? focusList.filter(fl => !fl.done)[0] : null;
   const nextFocusItem = focusList.length > 1 ? focusList.filter(fl => !fl.done)[1] : null;
   const [finishedFocusMoments, setFinishedFocusMoments] = useState<number>(0);
   const [isBreaktime, setIsBreaktime] = useState<boolean>(false);
   
-  const minusBtnIsDisabled = (countDown < minDuration) || isBreaktime;
+  const minusBtnIsDisabled = (countdown < minDuration) || isBreaktime;
   const addBtnIsDisabled = (currDuration > maxDuration) || isBreaktime;
 
-  console.log({ countDown, isStarted, isPaused, hasEnded });
+  console.log({ countdown, isStarted, isPaused, hasEnded });
 
   useEffect(() => {
     pause();
   }, []);
 
   useEffect(() => {
-    if (isStarted && countDown === -1) {
+    if (isStarted && countdown === -1) {
       if (!isBreaktime) {
         setFinishedFocusMoments(finishedFocusMoments + 1);
         setCurrDuration(fiveMinutesInSeconds);
@@ -59,7 +64,7 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
       }
       setIsBreaktime(!isBreaktime);
     }
-  }, [countDown, isBreaktime, isStarted, reset, finishedFocusMoments]);
+  }, [countdown, isBreaktime, isStarted, reset, finishedFocusMoments]);
 
   const startTimerHandler = () => {
     if (currFocusItem) {
@@ -70,13 +75,9 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
 
   const pauseTimerHandler = () => pause();
 
-  const resetTimerHandler = () => {
-    reset(defaultDuration, true);
-  }
-
   const addFiveMinutesHandler = () => {
     const newCountdown = isStarted
-      ? countDown + fiveMinutesInSeconds
+      ? countdown + fiveMinutesInSeconds
       : defaultDuration + fiveMinutesInSeconds;
 
     const newCurrDuration = currDuration + fiveMinutesInSeconds;
@@ -86,7 +87,7 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
 
   const minusFiveMinutesHandler = () => {
     const newCountdown = isStarted
-      ? countDown - fiveMinutesInSeconds
+      ? countdown - fiveMinutesInSeconds
       : defaultDuration - fiveMinutesInSeconds;
 
     const newCurrDuration = currDuration - fiveMinutesInSeconds;
@@ -140,12 +141,12 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
         )}
       </div>
       <ProgressBar
-        value={countDown}
+        value={countdown}
         targetValue={currDuration}
         color={isBreaktime ? "#981eb7" : undefined}
       >
         <div className="timer-countdown-container">
-          {countdownDisplay(countDown)}
+          {countdownDisplay(countdown)}
         </div>
         {isPaused ? renderStartBtn() : renderPauseBtn()}
       </ProgressBar>

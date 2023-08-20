@@ -6,6 +6,8 @@ import focusListActionType from "../../actions/focus-list";
 import TickerTape from "../ticker-tape/ticker-tape.component";
 import focusListReducer from "../../reducers/focus-list";
 import { saveFocusItem, removeFocusItem, updateFocusItem, resetFocusItems } from "../../utils/focus-item";
+import { storeCountdown } from "../../utils/countdown";
+import { useCountdown } from "../../hooks/useCountdown";
 
 import { TFocusItem } from "../../types";
 
@@ -13,9 +15,11 @@ import './my-pomodoro-timer.modules.css';
 
 type TMyPomodoroTimerProps = {
   initialFocusItems: TFocusItem[];
+  initialCountdown: number;
 };
 
-const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems }) => {
+const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems, initialCountdown }) => {
+  const [{ countDown, isStarted, isPaused, hasEnded }, { start, pause, reset }] = useCountdown(initialCountdown);
   const [focusList, dispatch] = useReducer(focusListReducer, initialFocusItems);
   const [showTimer, setShowTimer] = useState<boolean>(false);
   const [hideAll, setHideAll] = useState<boolean>(false);
@@ -26,6 +30,11 @@ const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems }) => {
   };
 
   const toggleHideAllHandler = () => {
+    if (!hideAll) {
+      storeCountdown(countDown);
+      console.log({ hideAll });
+    }
+
     setHideAll(!hideAll);
   };
 
@@ -91,7 +100,12 @@ const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems }) => {
   return (
     <div className="my-pomodoro-timer-container">
       <div className="app-cta-container">
-        {hideAll && (<TickerTape focusItem={currFocusItem} />)}
+        {hideAll && (
+          <TickerTape
+            countdown={countDown}
+            focusItem={currFocusItem}
+          />
+        )}
         {renderToggleUIDisplay()}
         <button
           type="button"
@@ -110,6 +124,13 @@ const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems }) => {
           addFocusItem={addFocusItemHandler}
           updateFocusItem={updateFocusItemHandler}
           removeFocusItem={removeFocusItemHandler}
+          countdown={countDown}
+          isStarted={isStarted}
+          isPaused={isPaused}
+          hasEnded={hasEnded}
+          start={start}
+          pause={pause}
+          reset={reset}
         />
         <FocusList
           show={!showTimer}
