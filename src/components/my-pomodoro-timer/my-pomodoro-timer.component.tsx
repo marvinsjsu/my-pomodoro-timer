@@ -5,7 +5,7 @@ import FocusList from "../focus-list/focus-list.component";
 import focusListActionType from "../../actions/focus-list";
 import TickerTape from "../ticker-tape/ticker-tape.component";
 import focusListReducer from "../../reducers/focus-list";
-import { saveFocusItem, removeFocusItem, updateFocusItem } from "../../utils/focus-item";
+import { saveFocusItem, removeFocusItem, updateFocusItem, resetFocusItems } from "../../utils/focus-item";
 
 import { TFocusItem } from "../../types";
 
@@ -63,6 +63,7 @@ const MyPomodoroTimer:FC<TMyPomodoroTimerProps> = ({ initialFocusItems }) => {
     dispatch({
       type: focusListActionType.RESET,
     });
+    resetFocusItems();
   };
 
   const renderToggleUIDisplay = () => {

@@ -19,8 +19,7 @@ type TFocusListProps = {
 const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFocusItem, resetFocusList }) => {
   const [inputVal, setInputVal] = useState<string>('');
   const showInputField = focusList.length < MAX_FOCUS_ITEM_COUNT;
-  const allTasksDone = focusList.length === MAX_FOCUS_ITEM_COUNT
-    && focusList.every(focusItem => focusItem.done);
+  const allTasksDone = focusList.every(focusItem => focusItem.done);
 
   const inputChangeHandler = (evt: React.ChangeEvent<HTMLInputElement>): void => {
     setInputVal(evt.target.value);
@@ -101,7 +100,7 @@ const FocusList:FC<TFocusListProps> = ({ show, focusList, addFocusItem, removeFo
               </button>
             </>
           ) : (
-            <p>Let's focus on completing these four tasks.</p>
+            <p>Let's focus on completing these tasks.</p>
           )}
           
         </div>

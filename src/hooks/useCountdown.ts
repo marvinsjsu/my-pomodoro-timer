@@ -42,7 +42,7 @@ export function useCountdown(initialCountValue: number = -1): TCountDownReturn {
           setCountDown((count) => {
             return count - 1;
           });
-        }, 100);
+        }, 1000);
       }
     }
 

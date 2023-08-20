@@ -42,6 +42,11 @@
   overflow-wrap: normal;
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.focus-list-container ul li span.focus-list-item-name {
+  max-width: 90%;
 }
 
 .focus-list-container ul li:nth-child(5) {

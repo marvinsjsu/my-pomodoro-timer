@@ -23,7 +23,7 @@ export const getFocusItems = async (): Promise<TFocusItem[]> => {
 
 export const storeFocusItems = async (focusItems: TFocusItem[]) => {
   const localStorageData = await getData(localStorageKey);
-  localStorageData[dataKeys.FocusItems] = focusItems;
+  // localStorageData[dataKeys.FocusItems] = focusItems;
   const newLocalStorageData = {
     ...localStorageData,
     [dataKeys.FocusItems]: focusItems,
@@ -50,4 +50,8 @@ export const updateFocusItem = async (updatedFocusItem: TFocusItem) => {
     : focusItem
   );
   await storeFocusItems(newFocusItems);
+};
+
+export const resetFocusItems = async () => {
+  await storeFocusItems([]);
 };

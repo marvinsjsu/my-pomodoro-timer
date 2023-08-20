@@ -132,6 +132,12 @@ const Timer:FC<TTimerProps> = ({ show, focusList, addFocusItem, updateFocusItem,
             </button>          
           </> 
         )}
+        {!currFocusItem && !isBreaktime && (
+          <h4 className="timer-current-focus-item empty-display">
+            Let's focus on a task! <br/>
+            Add an item to our focus list.
+          </h4>
+        )}
       </div>
       <ProgressBar
         value={countDown}

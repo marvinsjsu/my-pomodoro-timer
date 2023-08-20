@@ -30,6 +30,15 @@
   color: #981eb7;
 }
 
+h4.timer-current-focus-item.empty-display {
+  color: rgba(0, 0, 0, 0.8);
+  font-family: Kalam, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px;
+  text-align: center;
+}
+
 .timer-focus-item-container button {
   position: absolute;
   bottom: -30px;
